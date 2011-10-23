@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<head>
+	<meta char­set="utf-8">
+	<title>Twittoloid</title>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+        $(document).ready(function() {
+            var socket = io.connect('http://localhost:8080');
+
+            $('#startsearchbutton').click(function() {
+                var keyword =  $('#searchfor').val();
+                socket.emit('searchfor', keyword);
+            });
+            
+            socket.on("tweet", function(json) {
+				data = JSON.parse(json);
+				$("<li></li>").text("@" + data.user.screen_name + " " + data.text).prependTo("ul")
+			});
+        });
+    </script>
+</head>
+<body>
+    <h1>Twittoloid stream</h1>
+    <p>
+        <input type="text" id="searchfor"/>
+        <input type="button" value="find links" id="startsearchbutton"/>
+    </p>
+	<ul></ul>
+</body>
+</html>
