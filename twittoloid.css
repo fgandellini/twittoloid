@@ -1,0 +1,23 @@
+ul {
+    list-style: none;    
+}
+li {
+    width: 600px;
+}
+.tweet-with-links {
+    width: 600px;
+    background: #f99;
+}
+.avatar {
+    float:left;
+}
+.tweetdata {
+}
+.user {
+    color: #333;
+}
+.tweet {
+    color: #999;
+}
+.debug {
+}

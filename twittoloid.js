@@ -41,18 +41,61 @@ var TwitterNode = require('./twitter-node').TwitterNode;
 var twitterNodeConfig = {
   user: 'twittoloid', 
   password: 'polentone',
-  action: 'links',
-  track: ['simoncelli', 'mega', 'tette']
+  action: 'filter',
+  track: ['stogiasbavando']
 };
 
 var twitter = new TwitterNode(twitterNodeConfig);
+
+var hasLinks = function(tweet) {
+    /*
+    var url, _i, _len;
+    for (_i = 0, _len = urls.length; _i < _len; _i++) {
+        url = urls[_i];
+        url.expanded(url);
+    }
+    */
+    /*
+    var url, _i, _len, _ref;
+    datas - JSON.parse(json);
+    _ref = data.urls;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      url = _ref[_i];
+      url.expanded_url;
+    }
+    */
+    /*
+    console.log("data:"+JSON.stringify(tweet)+" urls:"+tweet.urls);
+
+    console.dir(tweet);
+if ((typeof tweet != "undefined" && tweet !== null ? tweet.urls : void 0) != null) {
+  return true;
+}
+return false;
+*/
+    if ((typeof tweet != "undefined" && tweet !== null ? tweet.urls : void 0) !== null) {
+        return true;
+    }
+    return false;
+/*
+    sys.puts(tweet.urls);
+    if (tweet.urls !== null && (tweet.urls != 'undefined') && tweet.urls.length > 0)
+        return true;
+    return false;*/
+    
+};
 
 twitter
 .addListener('error', function(error){
     console.log(error.message);
 })
 .addListener('tweet', function(tweet){
-    io.sockets.emit('tweet', JSON.stringify(tweet));
+    
+    if (hasLinks(tweet)) {
+        io.sockets.emit('tweet-with-links', tweet);
+    } else {
+        io.sockets.emit('tweet-without-links', tweet);
+    }
 
 //socket.broadcast(JSON.stringify(tweet));
 //socket.emit('tweet', JSON.stringify(tweet));
